@@ -64,9 +64,9 @@ const client = new MongoClient(uri, {
 
 
 // import router
-const users = require('../src/routes/users');
-const chat = require('../src/routes/chat');
-const groups = require('../src/routes/groups');
+const users = require('./src/routes/users');
+const chat = require('./src/routes/chat');
+const groups = require('./src/routes/groups');
 
 async function run() {
 
