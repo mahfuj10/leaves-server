@@ -1,5 +1,5 @@
 import express from 'express'
-import http from 'http';
+import http from 'http'
 import { Server } from 'socket.io'
 import { Request, Response } from "express";
 const cors = require("cors");
@@ -14,15 +14,21 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+// mongodb connectiorsn
+const uri = `mongodb+srv://Leaves:syhnGvVftV2U3ZB2@cluster0.39aol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
 
 // socket.io connection
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
-
+const io = new Server(server, { cors: { origin: "*" } });
 
 io.on("connection", socket => {
 
-    console.log("User connected with ", socket.id)
+    console.log("User connected with ", socket.id);
 
     socket.on("join_room", (data) => {
         socket.join(data)
@@ -46,6 +52,7 @@ io.on("connection", socket => {
 
 
 
+
     // socket.on('checkActive', id => {
     //     socket.to(id).emit('isActive', id);
     // })
@@ -56,12 +63,6 @@ io.on("connection", socket => {
 })
 
 // mongodb connection
-const uri = `mongodb+srv://Leaves:syhnGvVftV2U3ZB2@cluster0.39aol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
 
 // import router
 const users = require('../src/routes/users');
@@ -91,6 +92,7 @@ app.get("/", async (req: Request, res: Response) => {
 })
 
 
-app.listen(process.env.PORT || 5000, function (): any {
-    console.log("Express server listening on port %d in %s mode",);
-});
+
+server.listen(port, () => {
+    console.log("my server is runningin port 5000")
+})
