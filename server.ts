@@ -91,6 +91,7 @@ app.get("/", async (req: Request, res: Response) => {
 })
 
 
-app.listen(process.env.PORT || 5000, function (): any {
-    console.log("Express server listening on port %d in %s mode",);
-});
+
+app.listen(port, () => {
+    console.log("my server is runningin port 5000")
+})
