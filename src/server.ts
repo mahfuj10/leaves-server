@@ -2,13 +2,12 @@ import express from 'express'
 import http from 'http';
 import { Server } from 'socket.io'
 import { Request, Response } from "express";
-import { config } from 'dotenv';
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
-const router = express.Router();
+
 
 
 //middleware
@@ -18,7 +17,7 @@ app.use(cors());
 
 // socket.io connection
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
 
 
 io.on("connection", socket => {
@@ -65,9 +64,9 @@ const client = new MongoClient(uri, {
 
 
 // import router
-const users = require('./src/routes/users');
-const chat = require('./src/routes/chat');
-const groups = require('./src/routes/groups');
+const users = require('../src/routes/users');
+const chat = require('../src/routes/chat');
+const groups = require('../src/routes/groups');
 
 async function run() {
 
