@@ -18,14 +18,14 @@ app.use(cors());
 
 // socket.io connection
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
+const io = new Server(server, { cors: { origin: "*" } });
+
 
 io.on("connection", socket => {
 
     console.log("User connected with ", socket.id)
 
     socket.on("join_room", (data) => {
-        console.log(data)
         socket.join(data)
     })
 
@@ -36,6 +36,23 @@ io.on("connection", socket => {
     socket.on('disconnect', () => {
         console.log(`User disconnected ${socket.id}`);
     })
+
+    socket.on('typing', function (data) {
+        socket.broadcast.emit('typing', data)
+    })
+
+    socket.on('deleteMessage', function (data) {
+        socket.to(data.roomId).emit("deleteMessage", data);
+    })
+
+
+
+    // socket.on('checkActive', id => {
+    //     socket.to(id).emit('isActive', id);
+    // })
+    // socket.on('activeUser', user => {
+    //     socket.broadcast.emit('receive_activeUser', user)
+    // })
 
 })
 
@@ -50,6 +67,7 @@ const client = new MongoClient(uri, {
 // import router
 const users = require('../src/routes/users');
 const chat = require('../src/routes/chat');
+const groups = require('../src/routes/groups');
 
 async function run() {
 
@@ -57,6 +75,7 @@ async function run() {
 
         app.use('/users', users);
         app.use('/chat', chat);
+        app.use('/group', groups);
 
     }
     catch (err) {

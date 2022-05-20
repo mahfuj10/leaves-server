@@ -17,12 +17,27 @@ client.connect();
 
 // save google sign method user login
 router.put('/', async (req: Request, res: Response) => {
-    const user = req.body;
-    const filter = { email: user.email };
-    const options = { upsert: true };
-    const updateDoc = { $set: user };
-    const result = await usersCollection.updateOne(filter, updateDoc, options);
-    res.json(result);
+    try {
+        const user = req.body;
+        const filter = { email: user.email };
+        const options = { upsert: true };
+        const updateDoc = { $set: user };
+        const result = await usersCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    } catch (err: any) {
+        res.status(500).json({ message: err.message })
+    }
+});
+
+// save user 
+router.post('/', async (req: Request, res: Response) => {
+    try {
+        const user = req.body;
+        const result = await usersCollection.insertOne(user);
+        res.send(result);
+    } catch (err: any) {
+        res.status(500).json({ message: err.message })
+    }
 });
 
 // get all users
@@ -34,14 +49,25 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
+// get single user
+router.get('/singleuser/:uid', async (req: Request, res: Response) => {
+    try {
+        const uid = req.params.uid;
+        const query = { uid: uid };
+        res.send(await usersCollection.findOne(query));
+    } catch (err) {
+        console.log(err)
+    }
+});
+
 
 // add user in contract
 router.post('/addcontract/:uid', async (req: Request, res: Response) => {
     try {
         const uid = req.params.uid;
         const query = { uid: uid };
-        console.log(uid, req.body);
-        const result = await usersCollection.updateOne(query, { $push: { contracts: { $each: [req.body.uid] } } });
+        // const result = await usersCollection.updateOne(query, { $push: { contracts: { $each: [req.body.uid] } } });
+        const result = await usersCollection.updateOne(query, { $push: { contracts: req.body.uid } });
         res.send(result);
 
     } catch (err) {
@@ -49,23 +75,23 @@ router.post('/addcontract/:uid', async (req: Request, res: Response) => {
     }
 });
 
-// get convertation users
-router.get('/convertation', async (req: Request, res: Response) => {
+// check new user or old user
+router.get('/checkuser/:uid', async (req: Request, res: Response) => {
     try {
-        const contractsUsers = [];
-        const contractsUid = req.body;
-        console.log(contractsUid)
-        // for (let uid of contractsUid) {
-        //     const query = { uid: uid };
-        //     const user = await usersCollection.findOne(query);
-        //     contractsUsers.push(user);
-        // }
-        // console.log(contractsUsers)
-        res.status(200)
-    }
-    catch (err) {
+        const uid = req.params.uid;
+        const query = { uid: uid };
+        const user = await usersCollection.findOne(query);
+        if (user?.email) {
+            res.json({ olduser: true })
+        }
+        else {
+            res.json({ newUser: true })
+        }
+    } catch (err) {
         console.log(err)
     }
 });
+
+// delete contract user
 
 module.exports = router;
