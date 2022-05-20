@@ -1,6 +1,7 @@
 import express from 'express'
 import http from 'http';
 import { Server } from 'socket.io'
+import { Request, Response } from "express";
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
@@ -85,8 +86,11 @@ async function run() {
 }
 run().catch(e => console.log(e)).finally()
 
-app.get("/", async (req, res) => {
+app.get("/", async (req: Request, res: Response) => {
     res.send("Leaves server is running...")
 })
 
-server.listen(5000, () => console.log("Server started on port 5000..."));
+
+app.listen(process.env.PORT || 5000, function (): any {
+    console.log("Express server listening on port %d in %s mode",);
+});
