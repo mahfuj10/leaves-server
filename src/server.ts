@@ -85,7 +85,7 @@ async function run() {
 }
 run().catch(e => console.log(e)).finally()
 
-app.get(`/`, async (req, res) => {
+app.get("/", async (req, res) => {
     res.send("Leaves server is running...")
 })
 
