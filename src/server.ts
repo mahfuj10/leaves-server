@@ -15,7 +15,8 @@ app.use(express.json());
 app.use(cors());
 
 // mongodb connectiorsn
-const uri = `mongodb+srv://Leaves:syhnGvVftV2U3ZB2@cluster0.39aol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.39aol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -26,15 +27,15 @@ const client = new MongoClient(uri, {
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-io.on("connection", socket => {
+io.on("connection", (socket: any) => {
 
     console.log("User connected with ", socket.id);
 
-    socket.on("join_room", (data) => {
+    socket.on("join_room", (data: any) => {
         socket.join(data)
     })
 
-    socket.on("send_message", data => {
+    socket.on("send_message", (data: any) => {
         socket.to(data.roomId).emit("recive_message", data);
     })
 
@@ -42,11 +43,11 @@ io.on("connection", socket => {
         console.log(`User disconnected ${socket.id}`);
     })
 
-    socket.on('typing', function (data) {
+    socket.on('typing', function (data: any) {
         socket.broadcast.emit('typing', data)
     })
 
-    socket.on('deleteMessage', function (data) {
+    socket.on('deleteMessage', function (data: any) {
         socket.to(data.roomId).emit("deleteMessage", data);
     })
 
