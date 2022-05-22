@@ -32,15 +32,11 @@ io.on("connection", (socket: any) => {
     console.log("User connected with ", socket.id);
 
     socket.on("join_room", (data: any) => {
-        socket.join(data)
+        socket.join(data);
     })
 
     socket.on("send_message", (data: any) => {
         socket.to(data.roomId).emit("recive_message", data);
-    })
-
-    socket.on('disconnect', () => {
-        console.log(`User disconnected ${socket.id}`);
     })
 
     socket.on('typing', function (data: any) {
@@ -50,6 +46,30 @@ io.on("connection", (socket: any) => {
     socket.on('deleteMessage', function (data: any) {
         socket.to(data.roomId).emit("deleteMessage", data);
     })
+
+
+    const users: any = {};
+
+    socket.on('login', function (data: any) {
+        // const uid = { userId: data?.userId };
+        users[socket.id] = data.loginUser?.uid
+        socket.broadcast.emit('user-connected', data.loginUser);
+
+        // socket.broadcast.emit("activeusers", users);
+    });
+
+
+    socket.on('addedUser', function (data: any) {
+        socket.emit('addedUser', data);
+        console.log(data)
+    })
+
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('user-disconnected', users[socket.id])
+        delete users[socket.id]
+        console.log(`User disconnected ${socket.id}`);
+    });
+
 
 
 
