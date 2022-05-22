@@ -109,7 +109,11 @@ async function run() {
 run().catch(e => console.log(e)).finally()
 
 app.get("/", async (req: Request, res: Response) => {
-    res.send("Leaves server is running...")
+    try {
+        res.send("Leaves server is running...")
+    } catch (err) {
+        res.json({ message: 'there was a server error' })
+    }
 })
 
 
