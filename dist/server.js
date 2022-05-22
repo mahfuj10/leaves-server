@@ -123,12 +123,7 @@ run().catch(function (e) { return console.log(e); }).finally();
 app.get("/", function (req, res) {
     return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            try {
-                res.send("Leaves server is running...");
-            }
-            catch (err) {
-                res.json({ message: 'there was a server error' });
-            }
+            res.send("Leaves server is running...");
             return [2 /*return*/];
         });
     });
