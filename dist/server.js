@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -99,9 +99,9 @@ io.on("connection", function (socket) {
 });
 // mongodb connection
 // import router
-var users = require('../src/routes/users');
-var chat = require('../src/routes/chat');
-var groups = require('../src/routes/groups');
+var users = require('../dist/routes/users');
+var chat = require('../dist/routes/chat');
+var groups = require('../dist/routes/groups');
 function run() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -120,17 +120,19 @@ function run() {
     });
 }
 run().catch(function (e) { return console.log(e); }).finally();
-app.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            res.send("Leaves server is running...");
-        }
-        catch (err) {
-            res.json({ message: 'there was a server error' });
-        }
-        return [2 /*return*/];
+app.get("/", function (req, res) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            try {
+                res.send("Leaves server is running...");
+            }
+            catch (err) {
+                res.json({ message: 'there was a server error' });
+            }
+            return [2 /*return*/];
+        });
     });
-}); });
+});
 server.listen(port, function () {
     console.log("my server is runningin port 5000");
 });
