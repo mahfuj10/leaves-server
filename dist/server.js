@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -67,14 +67,28 @@ io.on("connection", function (socket) {
     socket.on("send_message", function (data) {
         socket.to(data.roomId).emit("recive_message", data);
     });
-    socket.on('disconnect', function () {
-        console.log("User disconnected ".concat(socket.id));
-    });
     socket.on('typing', function (data) {
         socket.broadcast.emit('typing', data);
     });
     socket.on('deleteMessage', function (data) {
         socket.to(data.roomId).emit("deleteMessage", data);
+    });
+    var users = {};
+    socket.on('login', function (data) {
+        var _a;
+        // const uid = { userId: data?.userId };
+        users[socket.id] = (_a = data.loginUser) === null || _a === void 0 ? void 0 : _a.uid;
+        socket.broadcast.emit('user-connected', data.loginUser);
+        // socket.broadcast.emit("activeusers", users);
+    });
+    socket.on('addedUser', function (data) {
+        socket.emit('addedUser', data);
+        console.log(data);
+    });
+    socket.on('disconnect', function () {
+        socket.broadcast.emit('user-disconnected', users[socket.id]);
+        delete users[socket.id];
+        console.log("User disconnected ".concat(socket.id));
     });
     // socket.on('checkActive', id => {
     //     socket.to(id).emit('isActive', id);
@@ -106,14 +120,17 @@ function run() {
     });
 }
 run().catch(function (e) { return console.log(e); }).finally();
-app.get("/", function (req, res) {
-    return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
+app.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        try {
             res.send("Leaves server is running...");
-            return [2 /*return*/];
-        });
+        }
+        catch (err) {
+            res.json({ message: 'there was a server error' });
+        }
+        return [2 /*return*/];
     });
-});
+}); });
 server.listen(port, function () {
     console.log("my server is runningin port 5000");
 });

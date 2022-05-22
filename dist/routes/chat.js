@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -49,127 +49,117 @@ var database = client.db("Leaves");
 var usersChat = database.collection('chats');
 client.connect();
 // post user message
-router.post('/', function (req, res) {
-    return __awaiter(void 0, void 0, void 0, function () {
-        var _a, _b, err_1;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _c.trys.push([0, 2, , 3]);
-                    gulp.task('tinypng', function () {
-                        gulp.src(req.body.picture)
-                            .pipe(tinypng({
-                                key: 'fB84pKZmS03LBzgS0yCPK3862c5hslh7',
-                                sigFile: 'images/.tinypng-sigs',
-                                log: true
-                            }))
-                            .pipe(gulp.dest('images'));
-                    });
-                    _b = (_a = res).send;
-                    return [4 /*yield*/, usersChat.insertOne(req.body)];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_1 = _c.sent();
-                    console.log(err_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
+router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, err_1;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                gulp.task('tinypng', function () {
+                    gulp.src(req.body.picture)
+                        .pipe(tinypng({
+                        key: 'fB84pKZmS03LBzgS0yCPK3862c5hslh7',
+                        sigFile: 'images/.tinypng-sigs',
+                        log: true
+                    }))
+                        .pipe(gulp.dest('images'));
+                });
+                _b = (_a = res).send;
+                return [4 /*yield*/, usersChat.insertOne(req.body)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _c.sent();
+                console.log(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
     });
-});
+}); });
 // get room data 
-router.get('/:room', function (req, res) {
-    return __awaiter(void 0, void 0, void 0, function () {
-        var roomId, query, _a, _b, err_2;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _c.trys.push([0, 3, , 4]);
-                    roomId = req.params.room;
-                    if (!(isNaN(roomId) !== true)) return [3 /*break*/, 2];
-                    query = { roomId: parseInt(roomId) };
-                    _b = (_a = res).send;
-                    return [4 /*yield*/, usersChat.find(query).toArray()];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    _c.label = 2;
-                case 2:
-                    ;
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_2 = _c.sent();
-                    res.status(500).json({ message: 'There was errror in server' });
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
+router.get('/:room', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var roomId, query, _a, _b, err_2;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 3, , 4]);
+                roomId = req.params.room;
+                if (!(isNaN(roomId) !== true)) return [3 /*break*/, 2];
+                query = { roomId: parseInt(roomId) };
+                _b = (_a = res).send;
+                return [4 /*yield*/, usersChat.find(query).toArray()];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                _c.label = 2;
+            case 2:
+                ;
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _c.sent();
+                res.status(500).json({ message: 'There was errror in server' });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
-});
+}); });
 // get all data
-router.get('/', function (req, res, next) {
-    return __awaiter(void 0, void 0, void 0, function () {
-        var _a, _b, err_3;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _c.trys.push([0, 2, , 3]);
-                    _b = (_a = res).send;
-                    return [4 /*yield*/, usersChat.find({}).toArray()];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_3 = _c.sent();
-                    next(err_3);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
+router.get('/', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, err_3;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                _b = (_a = res).send;
+                return [4 /*yield*/, usersChat.find({}).toArray()];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _c.sent();
+                next(err_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
     });
-});
+}); });
 // delete message data
-router.put('/deletemessage/:id', function (req, res) {
-    return __awaiter(void 0, void 0, void 0, function () {
-        var messageId, query, updatedDoc, _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    messageId = req.params.id;
-                    query = { _id: ObjectId(messageId) };
-                    updatedDoc = { $set: { deleted: true } };
-                    _b = (_a = res).send;
-                    return [4 /*yield*/, usersChat.updateOne(query, updatedDoc)];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [2 /*return*/];
-            }
-        });
+router.put('/deletemessage/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var messageId, query, updatedDoc, _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                messageId = req.params.id;
+                query = { _id: ObjectId(messageId) };
+                updatedDoc = { $set: { deleted: true } };
+                _b = (_a = res).send;
+                return [4 /*yield*/, usersChat.updateOne(query, updatedDoc)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [2 /*return*/];
+        }
     });
-});
+}); });
 //delete all message from room
-router.delete('/deleteallmessages/:roomId', function (req, res) {
-    return __awaiter(void 0, void 0, void 0, function () {
-        var roomId, query, _a, _b, err_4;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _c.trys.push([0, 2, , 3]);
-                    roomId = parseInt(req.params.roomId);
-                    query = { roomId: roomId };
-                    _b = (_a = res).send;
-                    return [4 /*yield*/, usersChat.deleteMany(query)];
-                case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_4 = _c.sent();
-                    res.status(500).json({ message: err_4.message });
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
+router.delete('/deleteallmessages/:roomId', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var roomId, query, _a, _b, err_4;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                roomId = parseInt(req.params.roomId);
+                query = { roomId: roomId };
+                _b = (_a = res).send;
+                return [4 /*yield*/, usersChat.deleteMany(query)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _c.sent();
+                res.status(500).json({ message: err_4.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
     });
-});
+}); });
 module.exports = router;
